@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="Board" type="com.bowtech.board.model.BoardDto"/>
+		<typeAlias alias="File" type="com.bowtech.board.model.FileDto"/>
+		<typeAlias alias="Coment" type="com.bowtech.board.model.ComentDto"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="META-INF/sqlmap/mappers/Board.xml"/>
+		<mapper resource="META-INF/sqlmap/mappers/File.xml"/>
+		<mapper resource="META-INF/sqlmap/mappers/Coment.xml"/>
+	</mappers>
+</configuration>

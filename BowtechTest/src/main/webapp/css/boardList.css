@@ -1,0 +1,206 @@
+@charset "UTF-8";
+* {
+	text-decoration: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+a {
+	color: black;
+}
+#boardTitleHeadline {
+	font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    border-bottom: 3px solid #E91E63;
+    width: 117px;
+}
+.boardListContent a:hover {
+	color: gray;
+	text-decoration: underline;
+}
+
+table{
+	border-collapse: collapse;
+    border-spacing: 0;
+}
+#mainBoardWrap {
+	margin: 50px auto;
+	width: 900px;
+}
+#boardListTable {
+	margin: 0 auto;
+	width: 900px;
+}
+#boardListSubject {
+	background-color: #E91E63;
+    color: white;
+    font-size: 17px;
+    height: 40px;
+}
+.boardListTdTitleSubject {
+	width: 500px;
+	text-align: center;
+	padding-left: 20px;
+    box-sizing: border-box;
+}
+.boardListContent {
+	border-bottom: 1px solid silver;
+	height: 40px;
+}
+.boardListTd {
+	width: 100px;
+	text-align: center;
+}
+.boardListTdReply {
+	width: 100px;
+	text-align: center;
+	font-size: 9px;
+	color: silver;
+}
+.boardListTdTitle {
+	width: 500px;
+	text-align: left;
+	padding-left: 20px;
+    box-sizing: border-box;
+    line-height: 40px;
+}
+
+#boardListBtn {
+	margin-top: 30px;
+	text-align: right;
+}
+
+#writeFormBtn {
+	border: none;
+    background-color: #E91E63;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#writeFormBtn:hover {
+	background-color: #f06c9a;
+}
+#boardPageDiv {
+	width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}
+.pageNum {
+	display: inline-block;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+}
+.pageNum:hover {
+	color: #E91E63;
+    font-size: 1.2em;
+}
+.pageNumSelected {
+	color: #E91E63;
+    font-size: 1.2em;
+}
+.startPage {
+	display: inline-block;
+    width: 30px;
+    height: 15px;
+    line-height: 15px;
+    font-size: 10px;
+}
+.startPage:hover {
+	color: red;
+}
+.endPage {
+	display: inline-block;
+    width: 30px;
+    height: 15px;
+    line-height: 15px;
+    font-size: 10px;
+}
+#searchDiv {
+	text-align: right;	
+	margin-bottom: 20px;
+}
+#search {
+	border: none;
+	outline: none;
+	border-bottom: 1px solid silver;
+	caret-color: #E91E63;
+}
+
+
+#searchBtn {
+	border: none;
+    background-color: #E91E63;
+    color: white;
+    width: 60px;
+    height: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    outline: none;
+}
+#searchBtn:hover {
+	background-color: white;
+	color: gray;
+	border: 1px solid #E91E63;
+}
+#bNameLabel {
+	border: 2px solid #ffa9c6;
+    border-radius: 8px;
+    width: 45px;
+    height: 25px;
+    display: inline-block;
+    line-height: 22px;
+    text-align: center;
+    font-size: 13px;
+    box-sizing: border-box;
+    color: #f51a0a;
+    font-weight: bold;
+    cursor: pointer;
+}
+#searchBname:checked ~ #bNameLabel {
+	background-color: #ffa9c6;
+	color: white;
+}
+#bTitleLabel {
+    border: 2px solid #ffa9c6;
+    border-radius: 8px;
+    width: 45px;
+    height: 25px;
+    display: inline-block;
+    line-height: 22px;
+    text-align: center;
+    font-size: 13px;
+    box-sizing: border-box;
+    color: #f51a0a;
+    font-weight: bold;
+    cursor: pointer;
+}
+#searchBtitle:checked ~ #bTitleLabel {
+	background-color: #ffa9c6;
+	color: white;
+}
+input[type=checkbox] {
+	display: none;
+}
+#goMain {
+	border: none;
+    background-color: #565656;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#goMain:hover {
+	background-color: #c0c0c0;
+}
+
+#deletedText {
+	color: silver;
+	font-size: 13px;
+}

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board">
+	<resultMap type="Board" id="boardResult">
+		<result property="bNum" column="bNum"/>
+		<result property="bPw" column="bPw"/>
+		<result property="bName" column="bName"/>
+		<result property="bTitle" column="bTitle"/>
+		<result property="bContent" column="bContent"/>
+		<result property="bGroup" column="bGroup"/>
+		<result property="bStep" column="bStep"/>
+		<result property="bIndent" column="bIndent"/>
+		<result property="bHit" column="bHit"/>
+		<result property="bStatus" column="bStatus"/>
+		<result property="bParentNum" column="bParentNum"/>
+		<result property="bRdate" column="bRdate"/>
+		<result property="bTot" column="bTot"/>
+		<result property="parentStatus" column="parentStatus"/>
+		<result property="commentCnt" column="commentCnt"/>
+		<result property="fileCnt" column="fileCnt"/>
+	</resultMap>
+	<!-- 게시글 리스트 갖고오기. -->
+	<select id="boardList" parameterType="Board" resultMap="boardResult">
+		<!-- SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A,
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BSTATUS=0 AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		    WHERE RN BETWEEN #{startRow} AND #{endRow} -->
+    		SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A,
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		    WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	<!-- 게시글 총 갯수 갖고오기. -->
+	<select id="boardTot" resultType="int">
+		<!-- SELECT COUNT(*) FROM BOARD WHERE BSTATUS=0 -->
+		SELECT COUNT(*) FROM BOARD
+	</select>
+	<!-- 원글의 총 갯수 갖고오기. -->
+	<select id="boardMainTot" resultType="int">
+		<!-- SELECT COUNT(*) FROM BOARD WHERE BPARENTNUM=0 AND BSTATUS=0 -->
+		SELECT COUNT(*) FROM BOARD WHERE BPARENTNUM=0		
+	</select>
+	<select id="boardMainTotTest" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A, 
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		    WHERE RN BETWEEN #{startRow} AND #{endRow} AND BPARENTNUM=0
+	</select>
+	<!-- 게시글 상세보기. -->
+	<select id="boardDetail" parameterType="Board" resultType="Board">
+		SELECT * FROM BOARD WHERE BNUM=#{bNum}
+	</select>
+	<!-- 게시글 작성하기(원글). -->
+	<insert id="boardWrite" parameterType="Board">
+		INSERT INTO BOARD(BNUM, BPW, BNAME, BTITLE, BCONTENT, BGROUP, BSTEP, BINDENT, BHIT, BSTATUS, BPARENTNUM, BRDATE) 
+			VALUES(SEQ_BOARD.NEXTVAL, #{bPw}, #{bName}, #{bTitle}, #{bContent}, SEQ_BOARD.CURRVAL, 0, 0, 0, 0, 0, SYSDATE)
+	</insert>
+	<!-- 답변글 달기 전 처리. -->
+	<update id="boardStepUp" parameterType="Board">
+		UPDATE BOARD SET BSTEP=BSTEP+1 WHERE BSTEP>#{bStep}
+	</update>
+	<!-- 게시글 작성하기(답변글). -->
+	<insert id="boardReply" parameterType="Board">
+		INSERT INTO BOARD(BNUM, BPW, BNAME, BTITLE, BCONTENT, BGROUP, BSTEP, BINDENT, BHIT, BSTATUS, BPARENTNUM, BRDATE) 
+    		VALUES(SEQ_BOARD.NEXTVAL, #{bPw}, #{bName}, #{bTitle}, #{bContent}, #{bGroup}, #{bStep}, #{bIndent}, 0, 0, #{bParentNum}, SYSDATE)
+	</insert>
+	<!-- 게시글 수정하기. -->
+	<update id="boardModify" parameterType="Board">
+		UPDATE BOARD SET BNAME=#{bName}, BTITLE=#{bTitle}, BCONTENT=#{bContent} WHERE BNUM=#{bNum}
+	</update>
+	<!-- 게시글 삭제처리하기. -->
+	<update id="boardDelete" parameterType="Board">
+		UPDATE BOARD SET BSTATUS=1 WHERE BNUM=#{bNum}
+	</update>
+	<!-- 조회수 올리기. -->
+	<update id="boardHit" parameterType="Board">
+		UPDATE BOARD SET BHIT=BHIT+1 WHERE BNUM=#{bNum}
+	</update>
+	
+	<!-- 액셀 다운로드를 위한 ..(전체 다운로드)-->
+	<select id="excelDownloadListAll" parameterType="Board" resultType="Board">
+		SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A, 
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+	</select>
+	<!-- 액셀 다운로드를 위한 ..(현재페이지 다운로드)-->
+	<select id="excelDownloadNowPage" parameterType="Board" resultType="Board">
+		SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A, 
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		     WHERE RN BETWEEN #{startRow} AND #{endRow}    
+	</select>
+	
+	<!-- 이름으로 검색시 리스트 출력 -->
+	<select id="searchName" parameterType="Board" resultMap="boardResult">
+		SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A, 
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BSTATUS=0 AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		    WHERE RN BETWEEN 1 AND 10 AND BNAME LIKE '%'||#{searchValue}||'%'
+	</select>
+	<!-- 이름으로 검색시 총 갯수 -->
+	<select id="searchNameTot" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM BOARD WHERE BNAME LIKE '%'||#{searchValue}||'%' AND BSTATUS=0
+	</select>
+	<!-- 이름으로 검색시 원글의 총 갯수 -->
+	<select id="searchNameMainTot" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM BOARD WHERE BNAME LIKE '%'||#{searchValue}||'%' AND BSTATUS=0 AND BPARENTNUM=0
+	</select>
+	
+	<!-- 제목으로 검색시 리스트 출력 -->
+	<select id="searchTitle" parameterType="Board" resultMap="boardResult">
+		SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A, 
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BSTATUS=0 AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		    WHERE RN BETWEEN 1 AND 10 AND BTITLE LIKE '%'||#{searchValue}||'%'
+	</select>
+	<!-- 제목으로 검색시 총 갯수 -->
+	<select id="searchTitleTot" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM BOARD WHERE BTITLE LIKE '%'||#{searchValue}||'%' AND BSTATUS=0
+	</select>
+	<!-- 제목으로 검색시 원글의 총 갯수 -->
+	<select id="searchTitleMainTot" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM BOARD WHERE BTITLE LIKE '%'||#{searchValue}||'%' AND BSTATUS=0 AND BPARENTNUM=0
+	</select>
+	
+	<!-- 작성자와 제목으로 검색시 리스트 출력 -->
+	<select id="searchNameTitle" parameterType="Board" resultMap="boardResult">
+		SELECT * FROM 
+		    (SELECT ROWNUM RN, D.* FROM
+		        (SELECT A.*,NVL(B.BSTATUS,0) PARENTSTATUS, NVL(C.FILECNT,0) FILECNT, NVL(D.COMENTCNT,0)COMMENTCNT FROM
+		             BOARD A, 
+		             BOARD B, 
+		            (SELECT F.BNUM, COUNT(*) FILECNT FROM BOARD_FILE F, BOARD B WHERE F.BNUM=B.BNUM AND F.FSTATUS=0 GROUP BY F.BNUM)C,
+		            (SELECT BNUM, COUNT(*) COMENTCNT FROM BOARD_COMENT GROUP BY BNUM)D
+		        WHERE A.BPARENTNUM=B.BNUM(+) AND A.BNUM=C.BNUM(+) AND A.BSTATUS=0 AND A.BNUM=D.BNUM(+) ORDER BY A.BGROUP DESC, A.BSTEP)D)
+		    WHERE RN BETWEEN 1 AND 10 AND BNAME LIKE '%'||#{searchValue}||'%' AND BTITLE LIKE '%'||#{searchValue}||'%'
+	</select>
+	<!-- 작성자와 제목으로 검색시 총 갯수 -->
+	<select id="searchNameTitleTot" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM BOARD WHERE BTITLE LIKE '%'||#{searchValue}||'%' AND BNAME LIKE '%'||#{searchValue}||'%' AND BSTATUS=0
+	</select>
+	<!-- 작성자와 제목으로 검색시 원글의 총 갯수 -->
+	<select id="searchNameTitleMainTot" parameterType="Board" resultType="int">
+		SELECT COUNT(*) FROM BOARD WHERE BTITLE LIKE '%'||#{searchValue}||'%' AND BNAME LIKE '%'||#{searchValue}||'%' AND BSTATUS=0 AND BPARENTNUM=0
+	</select>
+</mapper>

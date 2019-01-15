@@ -1,0 +1,388 @@
+@charset "UTF-8";
+* {
+	text-decoration: none;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+a {
+	color: black;
+}
+
+#writeFormWrap {
+	margin: 20px auto;
+	width: 900px;
+}
+#headline {
+	margin: 40px 0;
+}
+#headline>span {
+	display: inline-block;
+    width: 90px;
+    border-bottom: 3px solid #E91E63;
+    font-size: 25px;
+    font-weight: bold;
+}
+#writeFormUl {
+	width: 900px;
+}
+.writeFormLi {
+	width: 100%;
+	border-bottom: 1px solid silver;
+	min-height: 30px;
+	line-height: 30px;
+	overflow: hidden;
+}
+.writeFormContentTitle {
+	width: 75px;
+    display: inline-block;
+    font-size: 13px;
+    color: #434343;
+}
+input {
+	width: 400px;
+	outline: none;
+	border: none;
+	caret-color: #E91E63;
+}
+
+.file {
+	width: 200px;
+}
+#bContent {
+	width: 100%;
+	border: none;
+	min-height: 300px;
+	outline: none;
+	resize: none;
+}
+#addFile {
+	display: inline-block;
+    border: 1px solid #E91E63;
+    background-color: #E91E63;
+    color: white;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#fileWarningMsg {
+	display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    margin-left: 5px;
+    font-size: 13px;
+    color: #949494;
+}
+.deleteFile {
+	display: inline-block;
+    border: 1px solid #E91E63;
+    background-color: #E91E63;
+    color: white;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#btnDiv {
+	margin: 20px 0;
+	text-align: right;
+}
+#bContentCntDiv {
+	float: right;
+	color: silver;
+	font-size: 13px;
+}
+#submitBtn {
+	border: none;
+    background-color: #E91E63;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#submitBtn:hover {
+	background-color: white;
+	color: gray;
+	border: 1px solid #E91E63;
+}
+#resetBtn {
+	border: none;
+    background-color: #565656;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#resetBtn:hover {
+	background-color: #c0c0c0;
+}
+#backBtn {
+	border: none;
+    background-color: #565656;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#backBtn:hover {
+	background-color: #c0c0c0;
+}
+
+#deleteBtn {
+	border: none;
+    background-color: #565656;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#deleteBtn:hover {
+	background-color: #c0c0c0;
+}
+#statusPw {
+	float: right;
+	font-size: 13px;
+    font-weight: bold;
+}
+.fileSize {
+	font-size: 13px;
+	color: silver;
+	margin-left: 30px;
+	width: 85px;
+    display: inline-block;
+}
+
+#modifyFormBtn {
+	border: none;
+    background-color: #E91E63;
+    color: white;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#modifyFormBtn:hover {
+	background-color: white;
+	color: gray;
+	border: 1px solid #E91E63;
+}
+
+#boardReply {
+	border: 1px solid #E91E63;
+    background-color: white;
+    color: gray;
+    width: 70px;
+    height: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#boardReply:hover {
+	background-color: #E91E63;
+	color: white;
+}
+
+/*댓글 css*/
+#comentWriteDiv {
+	width: 900px;
+	margin: 0 auto;
+}
+#comentWriteHeadline {
+	font-size: 20px;
+    font-weight: bold;
+    width: 900px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #E91E63;
+}
+#comentWriterDiv {
+	height: 30px;
+    line-height: 30px;
+	border-bottom: 1px solid silver;
+}
+#comentPWDiv {
+	height: 30px;
+    line-height: 30px;
+	border-bottom: 1px solid silver;
+	overflow: hidden;
+}
+.comentWriterSpan {
+	font-size: 13px;
+    width: 60px;
+    display: inline-block;
+    color: gray;
+}
+#comentTextareaDiv {
+	width: 100%;
+	border-bottom: 1px solid silver;
+	overflow: hidden;
+}
+#cContent {
+	width: 100%;
+	height: 100px;
+	border: none;
+	outline: none;
+	caret-color: #E91E63;
+	resize: none;
+}
+#cComentCntDiv {
+	float: right;
+	color: silver;
+	font-size: 13px;
+}
+#comentBtnDiv {
+	margin: 20px 0;
+	text-align: right;
+}
+#comentWrite {
+	border: none;
+    background-color: #E91E63;
+    color: white;
+    width: 60px;
+    height: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#comentWrite:hover {
+	background-color: white;
+	color: gray;
+	border: 1px solid #E91E63;
+}
+#comentReset {
+	border: none;
+    background-color: #565656;
+    color: white;
+    width: 60px;
+    height: 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+#comentReset:hover {
+	background-color: #c0c0c0;
+}
+#statusCpw {
+	font-size: 13px;
+	float: right;
+}
+
+#comentListDiv {
+	width: 900px;
+	margin-bottom: 80px;
+}
+#comentListHeadline {
+	font-size: 20px;
+    font-weight: bold;
+    width: 900px;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #E91E63;
+}
+.comentListContentDiv {
+	position: relative;
+	border-bottom: 1px solid silver;
+	height: 100px;
+}
+.cContentList {
+	height: 58px;
+}
+.cContentListTextarea {
+	width: 100%;
+	border: none;
+	outline: none;
+	caret-color: #E91E63;
+	resize: none;	
+	height: 56px;
+}
+.cListBtn {
+	text-align: right;
+	margin-top: -7px;
+}
+.comentDeleteBtn {
+	width: 15px;
+    color: white;
+    background-color: #E91E63;
+    border-radius: 4px;
+    height: 15px;
+    line-height: 15px;
+    cursor: pointer;
+}
+.cNameList {
+	margin-top: 10px;
+    width: 190px;
+    border-bottom: 2px solid silver;
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+.cDeleteHiddenBox {
+	position: absolute;
+    right: 0px;
+    bottom: 0;
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid silver;
+    width: 200px;
+    height: 65px;
+    z-index: 10;
+    padding-left: 1px;
+    box-sizing: border-box;
+    display: none;
+}
+.cDeleteMsg {
+	font-size: 13px;
+    font-weight: bold;
+    float: left;
+    margin-top: 15px;
+}
+.cDeletePw {
+	width: 150px;
+    border-bottom: 1px solid silver;
+    display: inline-block;
+}
+.cDeleteCloseBtn {
+	float: right;
+    margin-right: 1px;
+    font-size: 13px;
+    background-color: #E91E63;
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    margin-top: 1px;
+    border-radius: 4px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+.cDeleteOkBtn {
+	width: 40px;
+    background-color: gray;
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#noComent {
+	width: 900px;
+	color: silver;
+	font-size: 15px;
+	text-align: center;
+}

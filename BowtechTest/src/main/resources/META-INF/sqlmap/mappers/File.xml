@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="File">
+	<resultMap type="File" id="fileResult">
+		<result property="fNum" column="fNum"/>
+		<result property="bNum" column="bNum"/>
+		<result property="fOrigin_Name" column="fOrigin_Name"/>
+		<result property="fStore_Name" column="fStore_Name"/>
+		<result property="fSize" column="fSize"/>
+		<result property="fStatus" column="fStatus"/>
+		<result property="fRdate" column="fRdate"/>
+	</resultMap>
+	<!-- 파일 상세보기 -->
+	<select id="fileDetail" parameterType="File" resultType="File">
+		SELECT * FROM BOARD_FILE WHERE FNUM=#{fNum}
+	</select>
+	<!-- 파일목록 갖고오기. -->
+	<select id="fileList" parameterType="File" resultMap="fileResult">
+		SELECT * FROM BOARD_FILE WHERE BNUM=#{bNum} AND FSTATUS=0
+	</select>
+	<!-- 파일 등록하기. -->
+	<insert id="fileUp" parameterType="File" useGeneratedKeys="true" keyProperty="bNum">
+		<selectKey keyProperty="bNum" resultType="int" order="BEFORE">
+			SELECT LAST_NUMBER-1
+			    FROM USER_SEQUENCES 
+			        WHERE SEQUENCE_NAME = UPPER('SEQ_BOARD')
+		</selectKey>
+		<![CDATA[
+		INSERT INTO BOARD_FILE(FNUM, BNUM, FORIGIN_NAME, FSTORE_NAME, FSIZE, FSTATUS, FRDATE)
+   			VALUES(SEQ_FILE.NEXTVAL, #{bNum}, #{fOrigin_Name}, #{fStore_Name}, #{fSize}, 0, SYSDATE)
+   		]]>
+	</insert>
+	<!-- 파일 삭제처리. -->
+	<update id="fileDelete" parameterType="File">
+		UPDATE BOARD_FILE SET FSTATUS=1 WHERE BNUM=#{bNum}
+	</update>
+	<!-- 파일 삭제처리 취소하기. -->
+	<update id="fileDeleteCancle" parameterType="File">
+		UPDATE BOARD_FILE SET FSTATUS=0 WHERE FNUM=#{fNum}
+	</update>
+	<insert id="fileModify" parameterType="File">
+		INSERT INTO BOARD_FILE(FNUM, BNUM, FORIGIN_NAME, FSTORE_NAME, FSIZE, FSTATUS, FRDATE)
+   			VALUES(SEQ_FILE.NEXTVAL, #{bNum}, #{fOrigin_Name}, #{fStore_Name}, #{fSize}, 0, SYSDATE)
+	</insert>
+</mapper>
